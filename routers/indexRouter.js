@@ -8,6 +8,7 @@ const blogRouter = require("./blogRouter");
 const commentRouter = require("./commentRouter");
 const authRouter = require("./authRouter");
 const userRouter = require("./userRouter");
+const infosRouter = require("./infosRouter");
 const adminRouter = require("./adminRouter");
 
 mainRouter.use("/auth", authRouter);
@@ -16,6 +17,7 @@ mainRouter.use("/api/products", productRouter);
 mainRouter.use("/api/comments", commentRouter);
 mainRouter.use("/api/blogs", blogRouter);
 mainRouter.use("/api/users", userRouter);
+mainRouter.use("/api/panel", infosRouter);
 mainRouter.use("/api/admins", adminRouter);
 
 module.exports = mainRouter;
