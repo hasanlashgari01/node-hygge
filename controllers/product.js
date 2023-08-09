@@ -18,21 +18,18 @@ exports.AllProducts = async (req, res, next) => {
 
 exports.create = async (req, res, next) => {
     try {
-        let { title, description, priceOriginal, ability, categoryName } = req.body;
+        let { title, description, priceOriginal, ability, category } = req.body;
 
+        if (!isValidObjectId(category)) throw { status: 400, message: "Category id is not valid" };
         await productValidationSchema.validateAsync({ title, description, priceOriginal, ability });
 
-        const product = await productModel.create({ title, description, priceOriginal, ability, categoryName });
-        await categoriesModel.findOneAndUpdate(
-            { name: categoryName },
-            {
-                $push: { products: product._id },
-            }
-        );
+        const isCategory = await categoriesModel.findOne({ _id: category });
+        if (!isCategory) throw { status: 404, message: "Category not found" };
+
+        const product = await productModel.create({ title, description, priceOriginal, ability, category });
 
         res.json({ ok: true, status: 200, success: true, message: "New product create successfully", product });
     } catch (error) {
-        console.log(error);
         next(error);
     }
 };

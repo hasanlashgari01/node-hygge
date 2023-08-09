@@ -13,6 +13,6 @@ categoryRouter
     .post(uploadFile.single("icon"), checkLogin, isAdmin, categoryController.create);
 categoryRouter.delete("/deleteMany", checkLogin, isAdmin, categoryController.removeMany);
 categoryRouter.delete("/:id", checkLogin, isAdmin, categoryController.remove);
-categoryRouter.get("/:categoryName", categoryController.getCategory);
+categoryRouter.get("/:categoryTitle", categoryController.getCategory);
 
 module.exports = categoryRouter;

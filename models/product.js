@@ -7,6 +7,10 @@ const productSchema = new mongoose.Schema({
     priceOriginal: { type: Number },
     offPercent: { type: Number },
     ability: { type: String },
+    category: {
+        type: mongoose.Types.ObjectId,
+        ref: "category",
+    },
 });
 
 productSchema.virtual("comments", {

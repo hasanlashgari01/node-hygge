@@ -4,13 +4,12 @@ const categoriesSchema = new mongoose.Schema({
     title: { type: String, required: true },
     shortName: { type: String, unique: true, required: true },
     icon: { type: String, required: true },
-    products: [
-        {
-            type: mongoose.Types.ObjectId,
-            ref: "product",
-            default: [],
-        },
-    ],
+});
+
+categoriesSchema.virtual("products", {
+    ref: "product",
+    localField: "_id",
+    foreignField: "category",
 });
 
 const categoriesModel = mongoose.model("category", categoriesSchema);
