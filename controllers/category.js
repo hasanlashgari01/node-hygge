@@ -17,9 +17,9 @@ exports.AllCategories = async (req, res, next) => {
 
 exports.getCategory = async (req, res, next) => {
     try {
-        const { categoryTitle } = req.params;
+        const { shortName } = req.params;
 
-        const category = await categoriesModel.findOne({ title: categoryTitle }, "-__v").lean();
+        const category = await categoriesModel.findOne({ shortName }, "-__v").lean();
         if (!category) throw { ok: false, status: 404, message: "Category not found" };
         const products = await productModel.find({ category: category._id }, "-__v -comments").lean();
 
