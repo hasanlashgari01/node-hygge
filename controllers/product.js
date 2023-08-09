@@ -2,6 +2,7 @@ const { isValidObjectId } = require("mongoose");
 const { productValidationSchema } = require("../validators/productValidator");
 const productModel = require("../models/product");
 const categoriesModel = require("../models/category");
+const commentModel = require("../models/comment");
 
 exports.AllProducts = async (req, res, next) => {
     try {
@@ -55,10 +56,12 @@ exports.getProduct = async (req, res, next) => {
         const { productId } = req.params;
         if (!isValidObjectId(productId)) throw { status: 422, message: "this id is not valid" };
 
-        const product = await productModel.findById(productId, "-__v").populate("comments");
+        const product = await productModel.findOne({ _id: productId }, "-__v").lean();
+        const comments = await commentModel.find({ product: product._id }, "body author").lean();
+
         if (!product) throw { status: 404, message: "Product not found" };
 
-        res.json(product);
+        res.json({ ...product, comments });
     } catch (error) {
         next(error);
     }

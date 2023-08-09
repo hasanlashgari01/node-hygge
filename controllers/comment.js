@@ -3,7 +3,7 @@ const commentModel = require("../models/comment");
 
 exports.AllReviews = async (req, res, next) => {
     try {
-        const comments = await commentModel.find({});
+        const comments = await commentModel.find({}, "-__v");
 
         if (comments.length == 0) throw { status: 404, message: "There is no comment" };
 
@@ -20,7 +20,7 @@ exports.newComment = async (req, res, next) => {
 
         if (!isValidObjectId(productId)) throw { status: 422, message: "Product id is not valid" };
 
-        await commentModel.create({ body, author });
+        await commentModel.create({ body, author, product: productId });
 
         res.json({ ok: true, status: 201, success: true, message: "New comment create successfully" });
     } catch (error) {

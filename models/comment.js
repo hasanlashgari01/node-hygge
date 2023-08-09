@@ -10,6 +10,10 @@ const commentSchema = new mongoose.Schema(
             type: mongoose.Types.ObjectId,
             required: true,
         },
+        product: {
+            type: mongoose.Types.ObjectId,
+            ref: "product"
+        },
     },
     { timestamps: true }
 );

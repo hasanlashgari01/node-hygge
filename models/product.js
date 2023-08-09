@@ -7,14 +7,12 @@ const productSchema = new mongoose.Schema({
     priceOriginal: { type: Number },
     offPercent: { type: Number },
     ability: { type: String },
-    // product => many comments
-    comments: [
-        {
-            type: mongoose.Types.ObjectId,
-            ref: "comment",
-            default: [],
-        },
-    ],
+});
+
+productSchema.virtual("comments", {
+    ref: "comment",
+    localField: "_id",
+    foreignField: "product",
 });
 
 const productModel = mongoose.model("product", productSchema);
