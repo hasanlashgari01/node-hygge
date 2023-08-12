@@ -72,8 +72,9 @@ exports.getMe = async (req, res, next) => {
 
         const user = await userModel
             .findOne({ email: decoded.email }, { password: 0, __v: 0 })
-            .populate("likes", "-__v -category");
-        
+            .populate("likes", "-__v -category")
+            .populate("bookmarks", "-__v -category");
+
         if (!user) {
             return res.status(404).json({ message: "User Not Found" });
         }

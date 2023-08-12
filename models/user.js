@@ -10,6 +10,7 @@ const userSchema = new mongoose.Schema(
         role: { type: String, default: "USER" },
         token: { type: String },
         likes: [{ type: mongoose.Types.ObjectId, ref: "product", default: [] }],
+        bookmarks: [{ type: mongoose.Types.ObjectId, ref: "product", default: [] }],
     },
     {
         timestamps: true,

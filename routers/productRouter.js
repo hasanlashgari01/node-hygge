@@ -12,5 +12,6 @@ productRouter
     .delete(checkLogin, isAdmin, productController.remove);
 productRouter.get("/like/:productId/:userId", checkLogin, productController.likeProduct);
 productRouter.get("/unlike/:productId/:userId", checkLogin, productController.unlikeProduct);
+productRouter.get("/bookmark/:productId/:userId", checkLogin, productController.addBookmarkProduct);
 
 module.exports = productRouter;

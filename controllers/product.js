@@ -69,11 +69,12 @@ exports.likeProduct = async (req, res, next) => {
     try {
         let { productId, userId } = req.params;
 
-        if (isValidObjectId(productId) && isValidObjectId(userId)) {
-            await userModel.findByIdAndUpdate(userId, { $push: { likes: productId } });
+        if (!isValidObjectId(productId) && !isValidObjectId(userId))
+            throw { message: "Product ID or User ID is not valid" };
 
-            res.json({ status: 200, message: "The product was liked by the user" });
-        }
+        await userModel.findByIdAndUpdate(userId, { $push: { likes: productId } });
+
+        res.json({ status: 200, message: "The product was liked by the user" });
     } catch (err) {
         next(err);
     }
@@ -86,9 +87,24 @@ exports.unlikeProduct = async (req, res, next) => {
         if (!isValidObjectId(productId) && !isValidObjectId(userId))
             throw { message: "Product ID or User ID is not valid" };
 
-        const unLikeProduct = await userModel.findByIdAndUpdate(userId, { $pull: { likes: productId } });
+        await userModel.findByIdAndUpdate(userId, { $pull: { likes: productId } });
 
-        res.send(unLikeProduct);
+        res.json({ status: 200, message: "The product was removed from the list of likes" });
+    } catch (err) {
+        next(err);
+    }
+};
+
+exports.addBookmarkProduct = async (req, res, next) => {
+    try {
+        let { productId, userId } = req.params;
+
+        if (!isValidObjectId(productId) && !isValidObjectId(userId))
+            throw { message: "Product ID or User ID is not valid" };
+
+        await userModel.findByIdAndUpdate(userId, { $push: { bookmarks: productId } });
+
+        res.json({ status: 200, message: "The product was liked by the user" });
     } catch (err) {
         next(err);
     }
