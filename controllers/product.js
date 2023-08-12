@@ -104,7 +104,22 @@ exports.addBookmarkProduct = async (req, res, next) => {
 
         await userModel.findByIdAndUpdate(userId, { $push: { bookmarks: productId } });
 
-        res.json({ status: 200, message: "The product was liked by the user" });
+        res.json({ status: 200, message: "The product was bookmarked by the user" });
+    } catch (err) {
+        next(err);
+    }
+};
+
+exports.removeBookmarkProduct = async (req, res, next) => {
+    try {
+        let { productId, userId } = req.params;
+
+        if (!isValidObjectId(productId) && !isValidObjectId(userId))
+            throw { message: "Product ID or User ID is not valid" };
+
+        await userModel.findByIdAndUpdate(userId, { $pull: { bookmarks: productId } });
+
+        res.json({ status: 200, message: "The product was removed from the list of bookmarks" });
     } catch (err) {
         next(err);
     }

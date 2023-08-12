@@ -13,5 +13,6 @@ productRouter
 productRouter.get("/like/:productId/:userId", checkLogin, productController.likeProduct);
 productRouter.get("/unlike/:productId/:userId", checkLogin, productController.unlikeProduct);
 productRouter.get("/bookmark/:productId/:userId", checkLogin, productController.addBookmarkProduct);
+productRouter.get("/remove-bookmark/:productId/:userId", checkLogin, productController.removeBookmarkProduct);
 
 module.exports = productRouter;
