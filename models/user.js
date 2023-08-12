@@ -9,6 +9,7 @@ const userSchema = new mongoose.Schema(
         image: { type: String },
         role: { type: String, default: "USER" },
         token: { type: String },
+        likes: [{ type: mongoose.Types.ObjectId, ref: "product", default: [] }],
     },
     {
         timestamps: true,

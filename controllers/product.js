@@ -3,6 +3,7 @@ const { productValidationSchema } = require("../validators/productValidator");
 const productModel = require("../models/product");
 const categoriesModel = require("../models/category");
 const commentModel = require("../models/comment");
+const userModel = require("../models/user");
 
 exports.AllProducts = async (req, res, next) => {
     try {
@@ -61,5 +62,19 @@ exports.getProduct = async (req, res, next) => {
         res.json({ ...product, comments });
     } catch (error) {
         next(error);
+    }
+};
+
+exports.likeProduct = async (req, res, next) => {
+    try {
+        let { productId, userId } = req.params;
+
+        if (isValidObjectId(productId) && isValidObjectId(userId)) {
+            const likeProduct = await userModel.findByIdAndUpdate(userId, { $push: { likes: productId } });
+
+            res.send(likeProduct);
+        }
+    } catch (err) {
+        next(err);
     }
 };

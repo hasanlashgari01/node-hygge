@@ -11,15 +11,17 @@ exports.register = async (req, res, next) => {
         const userValidate = await registerValidationSchema.validate({ username, fullName, email, password });
         const hashPassword = hashString(password);
         if (userValidate) {
-            const user = await userModel.create({ username, fullName, email, password: hashPassword, token }).catch(err => {
-                if (err?.code == 11000) {
-                    if (err.keyPattern.email == 1) {
-                        throw { status: 400, success: false, message: "ایمیل قبلا در سیستم استفاده شده است" };
-                    } else if (err.keyPattern.username == 1) {
-                        throw { status: 400, success: false, message: "نام کاربری قبلا در سیستم استفاده شده است" };
+            const user = await userModel
+                .create({ username, fullName, email, password: hashPassword, token })
+                .catch(err => {
+                    if (err?.code == 11000) {
+                        if (err.keyPattern.email == 1) {
+                            throw { status: 400, success: false, message: "ایمیل قبلا در سیستم استفاده شده است" };
+                        } else if (err.keyPattern.username == 1) {
+                            throw { status: 400, success: false, message: "نام کاربری قبلا در سیستم استفاده شده است" };
+                        }
                     }
-                }
-            });
+                });
             res.status(201).json({ message: "User registration was successful." });
         } else {
             next();
@@ -68,7 +70,10 @@ exports.getMe = async (req, res, next) => {
     try {
         const decoded = jwt.verify(token, process.env.SECRET_KEY);
 
-        const user = await userModel.findOne({ email: decoded.email }, { password: 0, __v: 0 });
+        const user = await userModel
+            .findOne({ email: decoded.email }, { password: 0, __v: 0 })
+            .populate("likes", "-__v -category");
+        
         if (!user) {
             return res.status(404).json({ message: "User Not Found" });
         }

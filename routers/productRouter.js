@@ -10,5 +10,6 @@ productRouter
     .route("/:productId")
     .get(productController.getProduct)
     .delete(checkLogin, isAdmin, productController.remove);
+productRouter.get("/like/:productId/:userId", checkLogin, productController.likeProduct);
 
 module.exports = productRouter;
