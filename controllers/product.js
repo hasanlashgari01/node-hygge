@@ -124,3 +124,17 @@ exports.removeBookmarkProduct = async (req, res, next) => {
         next(err);
     }
 };
+
+exports.searchProduct = async (req, res, next) => {
+    try {
+        let search = req.body.search;
+
+        const products = await productModel.find({ title: { $regex: search, $options: "i" } });
+
+        if (products == 0) throw { ok: true, status: 404, message: "Product not found with this title" };
+
+        res.json({ products });
+    } catch (err) {
+        next(err);
+    }
+};
