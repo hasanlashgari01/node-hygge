@@ -70,10 +70,25 @@ exports.likeProduct = async (req, res, next) => {
         let { productId, userId } = req.params;
 
         if (isValidObjectId(productId) && isValidObjectId(userId)) {
-            const likeProduct = await userModel.findByIdAndUpdate(userId, { $push: { likes: productId } });
+            await userModel.findByIdAndUpdate(userId, { $push: { likes: productId } });
 
-            res.send(likeProduct);
+            res.json({ status: 200, message: "The product was liked by the user" });
         }
+    } catch (err) {
+        next(err);
+    }
+};
+
+exports.unlikeProduct = async (req, res, next) => {
+    try {
+        let { productId, userId } = req.params;
+
+        if (!isValidObjectId(productId) && !isValidObjectId(userId))
+            throw { message: "Product ID or User ID is not valid" };
+
+        const unLikeProduct = await userModel.findByIdAndUpdate(userId, { $pull: { likes: productId } });
+
+        res.send(unLikeProduct);
     } catch (err) {
         next(err);
     }

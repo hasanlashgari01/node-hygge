@@ -11,5 +11,6 @@ productRouter
     .get(productController.getProduct)
     .delete(checkLogin, isAdmin, productController.remove);
 productRouter.get("/like/:productId/:userId", checkLogin, productController.likeProduct);
+productRouter.get("/unlike/:productId/:userId", checkLogin, productController.unlikeProduct);
 
 module.exports = productRouter;
