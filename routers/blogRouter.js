@@ -6,6 +6,7 @@ const { checkLogin, isAdmin } = require("../middleware/authLogin");
 const blogRouter = Router();
 
 blogRouter.route("/").get(blogController.AllBlogs).post(blogController.createBlog);
+blogRouter.get("/search", blogController.searchBlog);
 blogRouter
     .route("/:blogId")
     .get(blogController.getBlog)

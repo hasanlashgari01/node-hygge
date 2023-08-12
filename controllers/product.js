@@ -1,5 +1,5 @@
 const { isValidObjectId } = require("mongoose");
-const { productValidationSchema } = require("../validators/productValidator");
+const { productValidationSchema, searchProductValidationSchema } = require("../validators/productValidator");
 const productModel = require("../models/product");
 const categoriesModel = require("../models/category");
 const commentModel = require("../models/comment");
@@ -128,6 +128,8 @@ exports.removeBookmarkProduct = async (req, res, next) => {
 exports.searchProduct = async (req, res, next) => {
     try {
         let search = req.body.search;
+
+        await searchProductValidationSchema.validateAsync({ search });
 
         const products = await productModel.find({ title: { $regex: search, $options: "i" } });
 

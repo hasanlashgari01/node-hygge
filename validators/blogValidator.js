@@ -6,4 +6,8 @@ const blogValidationSchema = Joi.object({
     tip: Joi.string().required(),
 });
 
-module.exports = { blogValidationSchema };
+const searchBlogValidationSchema = Joi.object({
+    title: Joi.string().required().min(3),
+});
+
+module.exports = { blogValidationSchema, searchBlogValidationSchema };

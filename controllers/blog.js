@@ -1,6 +1,6 @@
 const blogModel = require("../models/blog");
 const { isValidObjectId } = require("mongoose");
-const { blogValidationSchema } = require("../validators/blogValidator");
+const { blogValidationSchema, searchBlogValidationSchema } = require("../validators/blogValidator");
 
 exports.AllBlogs = async (req, res, next) => {
     try {
@@ -65,5 +65,21 @@ exports.updateBlog = async (req, res, next) => {
         res.json({ ok: true, status: 201, success: true, message: "This blog updated successfully" });
     } catch (error) {
         next(error);
+    }
+};
+
+exports.searchBlog = async (req, res, next) => {
+    try {
+        let title = req.body.title;
+
+        await searchBlogValidationSchema.validateAsync({ title });
+
+        const blogs = await blogModel.find({ title: { $regex: title, $options: "i" } });
+
+        if (blogs == 0) throw { status: 404, message: "Product not found with this title" };
+
+        res.json({ products: blogs });
+    } catch (err) {
+        next(err);
     }
 };

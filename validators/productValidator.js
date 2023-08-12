@@ -8,4 +8,8 @@ const productValidationSchema = Joi.object({
     ability: Joi.string().required(),
 });
 
-module.exports = { productValidationSchema };
+const searchProductValidationSchema = Joi.object({
+    search: Joi.string().required().min(3),
+});
+
+module.exports = { productValidationSchema, searchProductValidationSchema };
