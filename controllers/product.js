@@ -88,6 +88,7 @@ exports.unlikeProduct = async (req, res, next) => {
         if (!isValidObjectId(productId) && !isValidObjectId(userId))
             throw { message: "Product ID or User ID is not valid" };
 
+        await productModel.findByIdAndUpdate(productId, { $set: { isLike: false } });
         await userModel.findByIdAndUpdate(userId, { $pull: { likes: productId } });
 
         res.json({ status: 200, message: "The product was removed from the list of likes" });
