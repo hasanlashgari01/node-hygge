@@ -72,6 +72,7 @@ exports.likeProduct = async (req, res, next) => {
         if (!isValidObjectId(productId) && !isValidObjectId(userId))
             throw { message: "Product ID or User ID is not valid" };
 
+        await productModel.findByIdAndUpdate(productId, { $set: { isLike: true } });
         await userModel.findByIdAndUpdate(userId, { $push: { likes: productId } });
 
         res.json({ status: 200, message: "The product was liked by the user" });

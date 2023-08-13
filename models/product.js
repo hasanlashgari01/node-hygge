@@ -8,6 +8,8 @@ const productSchema = new mongoose.Schema(
         priceOriginal: { type: Number },
         offPercent: { type: Number },
         ability: { type: String },
+        isLike: { type: Object, default: false },
+        isBookmark: { type: Object, default: false },
         category: {
             type: mongoose.Types.ObjectId,
             ref: "category",
