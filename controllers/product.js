@@ -1,7 +1,7 @@
 const { isValidObjectId } = require("mongoose");
+const path = require("path");
 const { productValidationSchema, searchProductValidationSchema } = require("../validators/productValidator");
 const productModel = require("../models/product");
-const categoriesModel = require("../models/category");
 const commentModel = require("../models/comment");
 const userModel = require("../models/user");
 
@@ -152,5 +152,16 @@ exports.searchProduct = async (req, res, next) => {
         res.json({ products });
     } catch (err) {
         next(err);
+    }
+};
+
+exports.getCover = async (req, res, next) => {
+    try {
+        let { fileName } = req.params;
+        if (!fileName) throw { status: 404, message: "File not found" };
+
+        res.sendFile(path.join(__dirname, "..", "public", "products", "covers", fileName));
+    } catch (error) {
+        next(error);
     }
 };

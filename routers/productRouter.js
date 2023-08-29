@@ -10,6 +10,7 @@ productRouter
     .route("/")
     .get(productController.AllProducts)
     .post(uploadProduct.single("image"), checkLogin, isAdmin, productController.create);
+productRouter.get("/cover/:fileName", productController.getCover);
 productRouter.get("/like/:productId/:userId", checkLogin, productController.likeProduct);
 productRouter.get("/unlike/:productId/:userId", checkLogin, productController.unlikeProduct);
 productRouter.get("/bookmark/:productId/:userId", checkLogin, productController.addBookmarkProduct);
