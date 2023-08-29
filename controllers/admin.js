@@ -45,7 +45,6 @@ exports.uploadAvatar = async (req, res, next) => {
 exports.getAvatar = async (req, res, next) => {
     try {
         let { fileName } = req.params;
-        console.log(fileName);
         if (!fileName) throw { status: 404, message: "File not found" };
 
         res.sendFile(path.join(__dirname, "..", "public", "users", "avatar", fileName));
