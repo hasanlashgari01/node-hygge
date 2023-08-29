@@ -5,7 +5,7 @@ exports.checkLogin = async (req, res, next) => {
     try {
         let authError = { statusCode: 401, message: "Please log in to your account." };
         const authorization = req?.headers?.authorization;
-        if (!authorization) next(authError);
+        if (!authorization) throw authError;
 
         let token = authorization.split(" ")[1];
         if (!token) next(authError);

@@ -7,7 +7,7 @@ const storage = multer.diskStorage({
     },
     filename: (req, file, cb) => {
         const ext = path.extname(file.originalname);
-        const fileTypes = /jpeg|jpg|png|gif/;
+        const fileTypes = /jpeg|jpg|png|gif|webp/;
         const extName = fileTypes.test(path.extname(file.originalname).toLowerCase());
         if (!extName && !mimeType) throw { status: 400, message: "File type is not valid" };
 
@@ -17,6 +17,6 @@ const storage = multer.diskStorage({
     },
 });
 
-const uploadProduct = multer({ storage });
+const uploader = multer({ storage });
 
-module.exports = uploadProduct;
+module.exports = uploader;
