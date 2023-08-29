@@ -16,11 +16,12 @@ exports.AllBlogs = async (req, res, next) => {
 
 exports.createBlog = async (req, res, next) => {
     try {
-        let { title, image, tip } = req.body;
+        let { title, tip } = req.body;
+        let image = req.file;
 
-        const blogValidate = await blogValidationSchema.validateAsync({ title, image, tip });
+        await blogValidationSchema.validateAsync({ title, tip });
 
-        await blogModel.create({ title, image, tip });
+        await blogModel.create({ title, image: image.filename, tip });
         res.json({ message: "New blog create successfully" });
     } catch (error) {
         next(error);
