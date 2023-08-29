@@ -11,7 +11,7 @@ exports.AllProducts = async (req, res, next) => {
 
         if (products.length == 0) throw { ok: false, status: 404, success: false, message: "There is no product" };
 
-        res.json(products);
+        res.status(200).json(products);
     } catch (error) {
         next(error);
     }
@@ -20,16 +20,26 @@ exports.AllProducts = async (req, res, next) => {
 exports.create = async (req, res, next) => {
     try {
         let { title, description, priceOriginal, ability, category } = req.body;
+        let image = req.file;
+
+        console.log(image);
 
         if (!isValidObjectId(category)) throw { status: 400, message: "Category id is not valid" };
         await productValidationSchema.validateAsync({ title, description, priceOriginal, ability });
 
-        const isCategory = await categoriesModel.findOne({ _id: category });
-        if (!isCategory) throw { status: 404, message: "Category not found" };
+        // const isCategory = await categoriesModel.findOne({ _id: category });
+        // if (!isCategory) throw { status: 404, message: "Category not found" };
 
-        const product = await productModel.create({ title, description, priceOriginal, ability, category });
+        const product = await productModel.create({
+            title,
+            description,
+            priceOriginal,
+            ability,
+            category,
+            productImage: image.filename,
+        });
 
-        res.json({ ok: true, status: 200, success: true, message: "New product create successfully", product });
+        res.json({ product });
     } catch (error) {
         next(error);
     }

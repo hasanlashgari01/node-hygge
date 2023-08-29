@@ -34,13 +34,12 @@ exports.register = async (req, res, next) => {
 exports.login = async (req, res, next) => {
     try {
         let { email, password } = req.body;
-        let user = await userModel.findOne({ email });
+        let user = await userModel.findOne({ $or: [{ username: identifier }, { email: identifier }] });
         await loginValidationSchema.validateAsync(req.body);
         const compareResult = bcrypt.compareSync(password, user.password);
 
         const userObject = user.toObject();
         Reflect.deleteProperty(userObject, "password");
-        Reflect.deleteProperty(userObject, "token");
 
         if (user && compareResult) {
             const token = tokenGenerator({ email });
