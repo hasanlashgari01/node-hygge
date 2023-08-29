@@ -73,3 +73,14 @@ exports.removeMany = async (req, res, next) => {
         next(error);
     }
 };
+
+exports.getIcon = async (req, res, next) => {
+    try {
+        let { fileName } = req.params;
+        if (!fileName) throw { status: 404, message: "File not found" };
+
+        res.sendFile(path.join(__dirname, "..", "public", "icon", fileName));
+    } catch (error) {
+        next(error);
+    }
+};

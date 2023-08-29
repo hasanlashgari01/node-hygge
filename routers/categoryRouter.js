@@ -11,6 +11,7 @@ categoryRouter
     .route("/")
     .get(categoryController.AllCategories)
     .post(uploadFile.single("icon"), checkLogin, isAdmin, categoryController.create);
+categoryRouter.get("/icons/:iconName", categoryController.getIcon);
 categoryRouter.delete("/deleteMany", checkLogin, isAdmin, categoryController.removeMany);
 categoryRouter.delete("/:id", checkLogin, isAdmin, categoryController.remove);
 categoryRouter.get("/:shortName", categoryController.getCategory);
