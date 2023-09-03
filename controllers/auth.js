@@ -34,7 +34,9 @@ exports.register = async (req, res, next) => {
 exports.login = async (req, res, next) => {
     try {
         let { email, password } = req.body;
-        let user = await userModel.findOne({ $or: [{ username: identifier }, { email: identifier }] });
+        console.log(email, password);
+        let user = await userModel.findOne({ email });
+        console.log(user);
         await loginValidationSchema.validateAsync(req.body);
         const compareResult = bcrypt.compareSync(password, user.password);
 
