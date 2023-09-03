@@ -3,7 +3,7 @@ const commentModel = require("../models/comment");
 
 exports.AllReviews = async (req, res, next) => {
     try {
-        const comments = await commentModel.find({}, "body author").populate("author", "fullName username role");
+        const comments = await commentModel.find({}, "body author").populate("author", "fullName username role image");
 
         if (comments.length == 0) throw { status: 404, message: "There is no comment" };
 
