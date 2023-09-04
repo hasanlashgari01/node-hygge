@@ -1,3 +1,4 @@
+const path = require("path");
 const { isValidObjectId } = require("mongoose");
 const { categoryValidatationSchema } = require("../validators/categoriesValidator");
 const categoriesModel = require("../models/category");
