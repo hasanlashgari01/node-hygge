@@ -71,11 +71,14 @@ exports.getMe = async (req, res, next) => {
     try {
         const decoded = jwt.verify(token, process.env.SECRET_KEY);
 
+        console.log(decoded);
+
         const user = await userModel
             .findOne({ email: decoded.email }, { password: 0, __v: 0 })
             .populate("likes", "-__v -category")
             .populate("bookmarks", "-__v -category");
 
+        // console.log(user);
         if (!user) {
             return res.status(404).json({ message: "User Not Found" });
         }
@@ -84,10 +87,11 @@ exports.getMe = async (req, res, next) => {
         res.json({ user: req.user });
     } catch (error) {
         if (error instanceof jwt.TokenExpiredError) {
-            throw { statusCode: 401, message: "توکن منقضی شده است" };
+            return res.status(401).json({ message: "Token Expired" });
         } else if (error instanceof jwt.JsonWebTokenError) {
-            throw { statusCode: 401, message: "توکن نامعتبر است" };
+            return res.status(401).json({ message: "Invalid Token" });
+        } else {
+            next(error);
         }
-        next(error);
     }
 };
