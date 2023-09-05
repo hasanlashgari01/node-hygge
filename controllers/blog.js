@@ -1,3 +1,4 @@
+const path = require('path');
 const blogModel = require("../models/blog");
 const { isValidObjectId } = require("mongoose");
 const { blogValidationSchema, searchBlogValidationSchema } = require("../validators/blogValidator");
@@ -82,5 +83,14 @@ exports.searchBlog = async (req, res, next) => {
         res.json({ products: blogs });
     } catch (err) {
         next(err);
+    }
+};
+
+exports.getImage = async (req, res, next) => {
+    try {
+        let { imageName } = req.params;
+        res.sendFile(path.join(__dirname, "..", "public", "blog", imageName));
+    } catch (error) {
+        next(error);
     }
 };
