@@ -10,6 +10,7 @@ userRouter
     .route("/")
     .get(isAdmin, userController.AllUsers)
     .put(avatarUploader.single("avatar"), userController.uploadAvatar);
+userRouter.put("/profile", userController.updateUserProfile);
 userRouter.get("/avatar/:fileName", userController.getAvatar);
 
 userRouter.delete("/:userId", isAdmin, userController.removeUser);
